@@ -163,7 +163,7 @@ const initTooltip = (bar: GanttBarObject) => {
   }
   tooltipTimeoutId = setTimeout(() => {
     showTooltip.value = true
-  }, 800)
+  }, 0)
   tooltipBar.value = bar
 }
 
@@ -180,6 +180,8 @@ const emitBarEvent = (
 ) => {
   switch (e.type) {
     case "click":
+      clearTooltip()
+      initTooltip(bar)
       emit("click-bar", { bar, e, datetime })
       break
     case "mousedown":
@@ -192,11 +194,11 @@ const emitBarEvent = (
       emit("dblclick-bar", { bar, e, datetime })
       break
     case "mouseenter":
-      initTooltip(bar)
+      // initTooltip(bar)
       emit("mouseenter-bar", { bar, e })
       break
     case "mouseleave":
-      clearTooltip()
+      // clearTooltip()
       emit("mouseleave-bar", { bar, e })
       break
     case "dragstart":
