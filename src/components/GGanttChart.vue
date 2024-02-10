@@ -39,7 +39,8 @@ import {
   useSlots,
   type ComputedRef,
   type Ref,
-  type ToRefs
+  type ToRefs,
+  onMounted
 } from "vue"
 import GGanttTimeaxis from "./GGanttTimeaxis.vue"
 import GGanttGrid from "./GGanttGrid.vue"
@@ -180,7 +181,7 @@ const emitBarEvent = (
 ) => {
   switch (e.type) {
     case "click":
-      clearTooltip()
+      // clearTooltip()
       initTooltip(bar)
       emit("click-bar", { bar, e, datetime })
       break
@@ -218,6 +219,16 @@ const emitBarEvent = (
   }
 }
 
+onMounted(() => {
+  const elements = document.querySelectorAll(".g-gantt-rows-container > .g-gantt-row")
+  elements.forEach((element) => {
+    console.log(element)
+    element.addEventListener("click", (event: any) => {
+      const target = event.target
+      if (target.classList.contains("g-gantt-row")) clearTooltip()
+    })
+  })
+})
 const ganttChart = ref<HTMLElement | null>(null)
 const chartSize = useElementSize(ganttChart)
 
